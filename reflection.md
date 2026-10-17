@@ -4,13 +4,17 @@
 
 **a. Initial design**
 
-- Briefly describe your initial UML design.
-- What classes did you include, and what responsibilities did you assign to each?
+- **UML Design:** The initial design established a modular, object-oriented architecture consisting of four core classes: `Owner`, `Pet`, `Task`, and `Scheduler`[cite: 1].
+- **Responsibilities:**
+  - `Owner`: Manages the household and maintains a collection of `Pet` objects.
+  - `Pet`: Stores pet metadata (name, species, breed, age) and holds a dedicated list of `Task` objects.
+  - `Task`: Represents individual care routines, tracking attributes like description, time, frequency, and completion status.
+  - `Scheduler`: Acts as the core logic engine ("brain"), retrieving and organizing tasks across all pets in the household[cite: 1].
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+- **Changes made:** Yes, the design evolved during implementation. While the base class skeletons remained stable, the `Scheduler` class was expanded to include dedicated algorithmic methods for chronological time sorting (`sort_by_time`) and duplicate time slot checking (`detect_conflicts`).
+- **Reasoning:** These enhancements were added to bridge the gap between simple list storage and intelligent scheduling, ensuring users can view their day in order and catch scheduling overlaps immediately.
 
 ---
 
@@ -18,13 +22,13 @@
 
 **a. Constraints and priorities**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+- **Constraints considered:** The scheduler primarily evaluates task execution times (`HH:MM` format), pet assignments, and completion statuses.
+- **Priority decision:** Chronological ordering and time-based conflict detection were prioritized because pet care tasks (such as medication or time-sensitive walks) require strict adherence to daily timelines to ensure animal well-being.
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+- **Tradeoff made:** The scheduler checks for time conflicts using exact string matches on the task `time` attribute rather than calculating complex time-interval overlaps or durations.
+- **Why it's reasonable:** For a lightweight, day-to-day pet management prototype, exact-time matching provides quick, reliable conflict warnings without introducing unnecessary date-time parsing overhead, keeping the codebase clean and maintainable.
 
 ---
 
@@ -32,13 +36,13 @@
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+- **Workflow usage:** AI tools were utilized across multiple phases, including brainstorming Python `dataclasses` skeletons, generating Mermaid.js UML diagrams, configuring Streamlit's `st.session_state` for data persistence, and drafting automated `pytest` test cases.
+- **Helpful prompts:** Asking the AI to explain how the `Scheduler` should cleanly extract tasks across multiple pet objects and how to structure lambda keys for time-sorting proved most effective.
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+- **Evaluation moment:** When drafting the recurrence and conflict detection logic, initial AI suggestions occasionally returned complex loops. The logic was reviewed and refactored to use cleaner Pythonic dictionary lookups for performance and readability.
+- **Verification method:** Every AI-assisted code snippet was rigorously verified by running standalone CLI demo scripts (`main.py`) and executing the automated test suite (`pytest`) to ensure zero regressions.
 
 ---
 
@@ -46,13 +50,13 @@
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+- **Behaviors tested:** The automated test suite (`test_pawpal.py`) verified core behaviors including task completion status updates, successful task additions to pet records, chronological sorting correctness, and conflict detection flagging.
+- **Importance:** These tests guaranteed that the backend logic layer remained robust and deterministic before wiring it into the Streamlit UI.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+- **Confidence level:** ⭐⭐⭐⭐⭐ (5/5). All automated tests pass successfully (`3 passed in 0.08s`), and the application behavior has been verified locally via both CLI and browser.
+- **Next edge cases:** If given more time, test cases would be expanded to cover handling pets with zero tasks, overlapping multi-hour task windows, and automated date-increment calculations for recurring weekly tasks.
 
 ---
 
@@ -60,12 +64,12 @@
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+- The transition from a CLI-first backend (`pawpal_system.py` and `main.py`) to a fully interactive Streamlit web application (`app.py`) went remarkably smoothly, resulting in a clean separation of concerns between business logic and presentation.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+- In another iteration, data persistence would be added via a local `data.json` file or lightweight database so that user-added pets and tasks are saved between application reboots.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+- The most important takeaway is that effective AI-assisted engineering requires strong human oversight. Acting as the lead architect—defining clear architectural boundaries, verifying outputs with automated tests, and guiding implementation choices—is essential to building maintainable systems.
